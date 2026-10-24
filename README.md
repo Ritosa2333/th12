@@ -49,6 +49,12 @@ ctest --test-dir artifacts/native --output-on-failure
 模块职责和验证范围见 [C++ 结构说明](docs/CPP-RESTORATION.md)。
 `decompiled/*.c` 是分析材料，不参与构建；文件内容和扩展名保留以反映其实际性质。
 
+## 绘制提交
+
+WebGL 2 绘制使用跨帧复用的交错顶点缓冲，只上传有效顶点段；贴图采样状态按纹理缓存。密集弹幕、连续换图和大批量提交三组固定负载在预热后均不再分配上传缓冲，也不重复设置贴图参数。录制式 WebGL 对照确认三组负载的顶点、绘制次数和上传字节与原实现一致。
+
+运行 `npm run benchmark:renderer` 查看绘制提交耗时、上传字节与状态调用；`tests/renderer-batching.test.mjs` 覆盖缓冲扩容、纹理切换、线带及背景捕获。
+
 ## 还原边界
 
 `main` 的 Eagler Touhou 平台接入进度、包边界及尚未完成项见 [Web 适配](docs/WEB_ADAPTATION.md)。
